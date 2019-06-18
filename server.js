@@ -7,7 +7,7 @@ var cheerio = require("cheerio");
 var exphbs = require("express-handlebars");
 
 var db = require("./models");
-var PORT = 3000 || process.env.PORT;
+var PORT = process.env.PORT || 3000;
 var app = express();
 
 app.use(express.static("public"));
@@ -19,7 +19,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 //route to scrape for articles and pass to database
 app.get("/scrape", function (req, res) {
