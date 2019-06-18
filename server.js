@@ -77,7 +77,7 @@ app.post("/saved/:id", function (req, res) {
 });
 
 //route to remove a saved article by id
-app.post("/articles/delete/:id", function (req, res) {
+app.post("/delete/:id", function (req, res) {
     db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: false })
         .then(function (data) {
             res.json(data);
@@ -87,7 +87,7 @@ app.post("/articles/delete/:id", function (req, res) {
         });
 });
 
-//route to render the articles
+//route to render all of the articles
 app.get("/", function (req, res) {
     db.Article.find({})
         .then(function (dbArticle) {
@@ -96,6 +96,21 @@ app.get("/", function (req, res) {
                 articles: dbArticle
             };
             res.render("index", handlebars);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
+
+//route to render only saved articles
+app.get("/saved", function (req, res) {
+    db.Article.find({ saved: true })
+        .then(function (dbArticle) {
+            var handlebars;
+            handlebars = {
+                articles: dbArticle
+            };
+            res.render("saved", handlebars);
         })
         .catch(function (err) {
             res.json(err);

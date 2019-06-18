@@ -24,7 +24,7 @@
     <div class="jumbotron text-center background-image">
         <div class="overlay">
             <div class="caption">
-                <h1 class="display-1">Mongo Scraper</h1>
+                <h1 class="display-1">Saved Articles</h1>
                 <h2>MakeUseOf</h2>
             </div>
         </div>
@@ -34,7 +34,7 @@
             {{#if articles}}
             {{#each articles}}
             <div class="card w-90">
-                <div class="card-header text-white bg-secondary">
+                <div class="card-header text-white bg-info">
                     <h4>{{title}}</h4>
                     </a>
                 </div>
@@ -46,14 +46,14 @@
                         <a href={{link}} target="_blank"></a>
                         {{byline}}
                     </p>
-                    <button id="{{_id}}" class="btn btn-success save-btn">Save Article</button>
+                    <button id="{{_id}}" class="btn btn-warning delete-btn">Delete Article</button>
                 </div>
             </div>
             {{/each}}
             {{else}}
             <div class="card text-white bg-secondary w-90 p-1">
                 <div class="card-body text-center">
-                    Nothing New
+                    Nothing Saved
                 </div>
             </div>
             {{/if}}
