@@ -3,15 +3,19 @@ var mongoose = require("mongoose");
 var logger = require("morgan");
 var axios = require("axios");
 var cheerio = require("cheerio");
+var exphbs = require("express-handlebars");
 
 var db = require("./models");
 var PORT = 3000;
 var app = express();
 
+app.use(express.static("public"));
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"));
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
@@ -62,7 +66,7 @@ app.get("/articles", function (req, res) {
 });
 
 //route to save an article by id
-app.post("/articles/save/:id", function (req, res) {
+app.post("/saved/:id", function (req, res) {
     db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true })
         .then(function (data) {
             res.json(data);
@@ -77,6 +81,21 @@ app.post("/articles/delete/:id", function (req, res) {
     db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: false })
         .then(function (data) {
             res.json(data);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
+
+//route to render the articles
+app.get("/", function (req, res) {
+    db.Article.find({})
+        .then(function (dbArticle) {
+            var handlebars;
+            handlebars = {
+                articles: dbArticle
+            };
+            res.render("index", handlebars);
         })
         .catch(function (err) {
             res.json(err);
