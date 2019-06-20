@@ -15,8 +15,11 @@ $(".save-btn").on("click", function () {
     })
         .then(function (data) {
             console.log(data);
-            window.location = "/"
         })
+    $("#saved-modal").modal("toggle");
+    $("#saved-modal").on("hidden.bs.modal", function () {
+        window.location = "/";
+    })
 });
 
 $(".delete-btn").on("click", function () {
@@ -29,6 +32,9 @@ $(".delete-btn").on("click", function () {
     })
         .then(function (data) {
             console.log(data);
-            window.location = "/saved"
         })
+    $("#deleted-modal").modal("toggle");
+    $("#deleted-modal").on("hidden.bs.modal", function () {
+        window.location = "/saved";
+    })
 });
