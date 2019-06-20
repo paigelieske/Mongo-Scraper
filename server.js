@@ -67,7 +67,7 @@ app.get("/articles", function (req, res) {
 });
 
 //route to save an article by id
-app.post("/saved/:id", function (req, res) {
+app.post("/save/:id", function (req, res) {
     db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true })
         .then(function (data) {
             res.json(data);
